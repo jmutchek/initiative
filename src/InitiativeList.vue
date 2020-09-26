@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <p>Loading content from the API: <b id="name">...</b></p>
+
     <b-table
       :data="isEmpty ? [] : data"
       :columns="columns"
@@ -24,8 +26,8 @@ export default {
     const data = [
       { initiative: 20, name: "Lux" },
       { initiative: 18, name: "Aya" },
-    ]
-    const columns= [
+    ];
+    const columns = [
       {
         field: "initiative",
         label: "Modified Roll",
@@ -58,6 +60,11 @@ export default {
     },
   },
 };
+
+(async function () {
+  let { text } = await (await fetch('/api/initiatives')).json();
+  document.querySelector("#name").textContent = text;
+})();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
