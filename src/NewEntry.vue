@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <h2 class="subtitle">This is a NewEntry</h2>
+    <b-field label="Name">
+      <b-input value=""></b-input>
+      <b-button @click="clickMe">Click Me</b-button>
+    </b-field>
   </div>
 </template>
 
@@ -9,6 +12,11 @@ export default {
   name: "NewEntry",
   data() {
     return {};
+  },
+  methods: {
+    clickMe() {
+      this.$buefy.notification.open("Clicked!!");
+    },
   },
 };
 </script>
