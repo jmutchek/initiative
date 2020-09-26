@@ -1,11 +1,16 @@
 <template>
   <div>
-    <h1 class="title">Hello {{ value }}</h1>
+    <section class="section">
+    <h1 class='title'>Initiative Order</h1>
+      <InitiativeList></InitiativeList>
+    </section>
     <section class="section">
       <NewEntry></NewEntry>
     </section>
-    <section class="section">
-      <InitiativeList></InitiativeList>
+    <section>
+      <div class="container">
+        <b-button @click="clickMe">Clear Initiative Rolls</b-button>
+      </div>
     </section>
   </div>
 </template>

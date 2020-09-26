@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <b-field label="Name">
+    <b-field label="Add combatants to the initiative order">
       <b-input value=""></b-input>
-      <b-button @click="clickMe">Click Me</b-button>
+      <b-button @click="clickMe">Add</b-button>
     </b-field>
   </div>
 </template>
