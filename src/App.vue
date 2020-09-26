@@ -8,6 +8,9 @@
 </template>
 
 <script>
+// @ is an alias to /src
+import NewEntry from '@/NewEntry.vue'
+
 export default {
   name: "App",
   components: {
