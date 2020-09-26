@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>This is the new Entry</h2>
+  <div class="container">
+    <h2 class="subtitle">This is a NewEntry</h2>
   </div>
 </template>
 
