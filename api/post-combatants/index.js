@@ -14,7 +14,7 @@ module.exports = async function (context, req) {
       {
         PartitionKey: "001",
         RowKey: rowkey,
-        Visible: false
+        visible: false
       }
     );
 

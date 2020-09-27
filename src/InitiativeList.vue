@@ -43,7 +43,7 @@ export default {
       initList: [],
       columns,
       checkboxPosition: "left",
-      // checkedRows: [],
+      checkedRows: [],
       visibileRows: [],
       isEmpty: false,
       isBordered: false,
@@ -56,21 +56,21 @@ export default {
     };
   },
   computed: {
-    checkedRows: {
-      // getter
-      get: function() {
-        var visibleRows=[]
-        this.initList.forEach(combatant => {
-          if (combatant.visible) {
-            visibleRows.push(combatant)
-          }
-        })
-        return visibleRows
-      },
-      set: function(newValue) {
+    // checkedRows: {
+    //   // getter
+    //   get: function() {
+    //     var visibleRows=[]
+    //     this.initList.forEach(combatant => {
+    //       if (combatant.visible) {
+    //         visibleRows.push(combatant)
+    //       }
+    //     })
+    //     return visibleRows
+    //   },
+    //   set: function(newValue) {
         
-      }
-    }
+    //   }
+    // }
   },
   methods: {
     clickMe() {
@@ -82,6 +82,11 @@ export default {
         .then(async (data) => {
           var jsonBody = await data.json();
           this.initList = jsonBody.data;
+          this.initList.forEach(combatant => {
+          if (combatant.visible) {
+            this.checkedRows.push(combatant)
+          }
+        })
           document.querySelector("#name").textContent = JSON.stringify(
             jsonBody
           );
