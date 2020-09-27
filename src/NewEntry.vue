@@ -37,6 +37,7 @@ export default {
       // send POST request
       fetch("/api/combatants", options)
         .then((res) => res.json())
+        .then(this.$eventHub.$emit('reload-list'))
         .catch(error => {
           console.error(this.newName + ' might already exist', error)
           this.$buefy.notification.open({

@@ -56,21 +56,6 @@ export default {
     };
   },
   computed: {
-    // checkedRows: {
-    //   // getter
-    //   get: function() {
-    //     var visibleRows=[]
-    //     this.initList.forEach(combatant => {
-    //       if (combatant.visible) {
-    //         visibleRows.push(combatant)
-    //       }
-    //     })
-    //     return visibleRows
-    //   },
-    //   set: function(newValue) {
-        
-    //   }
-    // }
   },
   methods: {
     clickMe() {
@@ -114,6 +99,12 @@ export default {
       });
     },
   },
+  created() {
+    this.$eventHub.$on('reload-list', this.refreshInitiativeList)
+  },
+  beforeDestroy() {
+    this.$eventHub.$off('reload-list');
+  },
   mounted() {
     this.refreshInitiativeList();
   }
@@ -141,4 +132,9 @@ function revealCombatant(combatant, visibility) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  .is-checked {
+    font-weight: bold;
+  }
+
 </style>
