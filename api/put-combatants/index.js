@@ -4,7 +4,7 @@ const tableService = azure.createTableService();
 const tableName = "initiative";
 
 module.exports = function (context, req) {
-  context.log('JavaScript HTTP trigger function processed a request.');
+  context.log('JavaScript HTTP trigger function: put-combatants');
 
   // const name = (req.query.name || (req.body && req.body.name));
   // const responseMessage = name
@@ -17,6 +17,7 @@ module.exports = function (context, req) {
     const item = req.body;
 
     tableService.replaceEntity(tableName, item, function (error, result, response) {
+      response;
       if (!error) {
         context.res.status(202).json(result);
       } else {
