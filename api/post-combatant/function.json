@@ -1,0 +1,26 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "post"
+      ],
+      "route": "combatants"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "tableName": "initiative",
+      "connection": "MyStorageConnectionAppSetting",
+      "name": "combatant",
+      "type": "table",
+      "direction": "out"
+    }
+  ]
+}
