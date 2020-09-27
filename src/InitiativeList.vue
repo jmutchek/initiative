@@ -24,14 +24,15 @@
         {{ props.row.RowKey}}
       </b-table-column>
 
-      <b-table-column>
-        <b-icon 
-          icon='trash-can-outline'
+      <b-table-column v-slot='props'>
+        <b-button
+          type="is-text"
+          icon-left='trash-can-outline'
           size='is-small'
           class='has-text-grey-light'
-          v-on:click="clickMe"
+          v-on:click="deleteCombatant(props.row)"
           >
-        </b-icon>
+        </b-button>
       </b-table-column>
 
     </b-table>
@@ -76,9 +77,33 @@ export default {
   computed: {
   },
   methods: {
-    clickMe() {
-      // on click isn't working inside of the table because the table itself catches the click event
-      this.$buefy.notification.open("Clicked!!");
+    deleteCombatant(row) {
+      var rowBeingDeleted = row
+      console.log("deleting " + rowBeingDeleted.RowKey + " from to list")
+
+      // request options
+      const options = {
+        method: "DELETE",
+        body: JSON.stringify(row),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      // send POST request
+      fetch("/api/combatants", options)
+        .then((res) => res.json())
+        .then(this.$eventHub.$emit('reload-list'))
+        .catch(error => {
+          console.error(rowBeingDeleted.RowKey + ' could not be deleted', error)
+          this.$buefy.notification.open({
+            message: rowBeingDeleted.RowKey + ' could not be deleted',
+            type: 'is-danger'
+          });
+        })
+        // .then((res) => console.log(res));
+      
+      this.$buefy.notification.open("Deleted " + rowBeingDeleted.RowKey);
     },
     async refreshInitiativeList() {
       // with help from https://michaelnthiessen.com/this-is-undefined/
