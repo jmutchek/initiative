@@ -44,6 +44,7 @@ export default {
       columns,
       checkboxPosition: "left",
       checkedRows: [],
+      visibileRows: [],
       isEmpty: false,
       isBordered: false,
       isStriped: false,
@@ -68,6 +69,24 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+  },
+  watch: {
+    checkedRows: function (newChecked, oldChecked) {
+      console.log ("Old array: " + oldChecked.length)
+      console.log ("New array: " + newChecked.length)
+      oldChecked.forEach(row => {
+        var oldRowRemains = newChecked.filter(function (entry) {return entry.RowKey === row.RowKey})
+        if (oldRowRemains.length == 0) {
+          console.log ("must remove " + row.RowKey)
+        }
+      });
+      newChecked.forEach(row => {
+        var newRow = oldChecked.filter(function (entry) {return entry.RowKey === row.RowKey})
+        if (newRow.length == 0) {
+          console.log ("must add " + row.RowKey)
+        }
+      })
+    }
   },
   mounted() {
     this.refreshInitiativeList();
