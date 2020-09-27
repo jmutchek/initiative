@@ -37,7 +37,7 @@ export default {
       },
     ];
     return {
-      initList: [{ RowKey: "Hi", ModifiedRoll: 18 }],
+      initList: [],
       columns,
       checkboxPosition: "left",
       checkedRows: [],
@@ -55,12 +55,12 @@ export default {
     clickMe() {
       this.$buefy.notification.open("Clicked!!");
     },
-    refreshInitiativeList() {
-      fetch("/api/initiatives")
-        .then(data => {
-          var jsonBody = data.json()
-          // this.initList = data.json;
-          console.log (jsonBody)
+    async refreshInitiativeList() {
+      // with help from https://michaelnthiessen.com/this-is-undefined/
+      await fetch("/api/initiatives")
+        .then(async data => {
+          var jsonBody = await data.json()
+          this.initList = jsonBody.data;
           document.querySelector("#name").textContent = JSON.stringify(jsonBody);
         })
         .catch((err) => console.error(err));
