@@ -20,7 +20,7 @@ export default {
       // this.$buefy.notification.open("Clicked!!");
       const newUser = {
         PartitionKey: "001",
-        Name: this.newName,
+        RowKey: this.newName,
       };
 
       // request options

@@ -7,21 +7,21 @@ module.exports = async function (context, req) {
     //     ? "Hello, " + name + ". This HTTP triggered function executed successfully."
     //     : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
 
-    const name = (req.query.name || (req.body && req.body.Name));
-    console.log(name)
+    const rowkey = (req.query.rowkey || (req.body && req.body.RowKey));
+    console.log(rowkey)
     // const roll = (req.query.modifiedroll || (req.modifiedroll && req.body.modifiedroll));
 
     context.bindings.combatant = [];
     context.bindings.combatant.push(
       {
         PartitionKey: "001",
-        RowKey: name
+        RowKey: rowkey
       }
     );
 
     context.res = {
         // status: 200, /* Defaults to 200 */
-        // body: "nothing here yet"
+        body: { "status": "OK"}
     };
 
     context.done();
