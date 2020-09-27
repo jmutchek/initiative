@@ -18,6 +18,8 @@ export default {
   methods: {
     clickMe() {
       // this.$buefy.notification.open("Clicked!!");
+      console.log("adding " + this.newName + " to list")
+
       const newUser = {
         PartitionKey: "001",
         RowKey: this.newName,
@@ -35,7 +37,14 @@ export default {
       // send POST request
       fetch("/api/combatants", options)
         .then((res) => res.json())
-        .then((res) => console.log(res));
+        .catch(error => {
+          console.error(this.newName + ' might already exist', error)
+          this.$buefy.notification.open({
+            message: this.newName + ' might already exist',
+            type: 'is-danger'
+          });
+        })
+        // .then((res) => console.log(res));
     },
   },
 };

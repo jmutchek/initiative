@@ -113,7 +113,7 @@ function revealCombatant(combatant, visibility) {
   // send PUT request
   fetch("/api/combatants", options)
     .then((res) => res.json())
-    .then((res) => console.log(res));
+    // .then((res) => console.log(res));
 }
 </script>
 
