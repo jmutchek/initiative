@@ -133,8 +133,4 @@ function revealCombatant(combatant, visibility) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .is-checked {
-    font-weight: bold;
-  }
-
 </style>
