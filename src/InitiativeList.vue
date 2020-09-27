@@ -40,7 +40,7 @@ export default {
       initList: [{ RowKey: "Hi", ModifiedRoll: 18 }],
       columns,
       checkboxPosition: "left",
-      // checkedRows: [this.data[1]],
+      checkedRows: [],
       isEmpty: false,
       isBordered: false,
       isStriped: false,
@@ -56,18 +56,20 @@ export default {
       this.$buefy.notification.open("Clicked!!");
     },
     refreshInitiativeList() {
-      (async function () {
-        let { data } = await (await fetch("/api/initiatives")).json();
-        document.querySelector("#name").textContent = JSON.stringify(data);
-        this.initList = data;
-      })();
+      fetch("/api/initiatives")
+        .then(data => {
+          var jsonBody = data.json()
+          // this.initList = data.json;
+          console.log (jsonBody)
+          document.querySelector("#name").textContent = JSON.stringify(jsonBody);
+        })
+        .catch((err) => console.error(err));
     },
   },
   mounted() {
-    this.refreshInitiativeList()
-  }
+    this.refreshInitiativeList();
+  },
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

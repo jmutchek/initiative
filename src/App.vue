@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="section">
-    <h1 class='title'>Initiative Order</h1>
+      <h1 class="title">Initiative Order</h1>
       <InitiativeList></InitiativeList>
     </section>
     <section class="section">
@@ -17,24 +17,28 @@
 
 <script>
 // @ is an alias to /src
-import NewEntry from '@/NewEntry.vue'
-import InitiativeList from '@/InitiativeList.vue'
+import NewEntry from "@/NewEntry.vue";
+import InitiativeList from "@/InitiativeList.vue";
 
 export default {
   name: "App",
   components: {
     NewEntry,
-    InitiativeList
+    InitiativeList,
   },
   data() {
     return {
       value: "World",
     };
   },
+  methods: {
+    clickMe() {
+      this.$buefy.notification.open("Clicked!!");
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
