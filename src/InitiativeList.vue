@@ -14,6 +14,8 @@
       checkable
       :checked-rows.sync="checkedRows"
       :checkbox-position="checkboxPosition"
+      default-sort="ModifiedRoll"
+      default-sort-direction="desc"
     ></b-table>
 
     <p>The API returned: <pre id="name">...</pre></p>
@@ -30,6 +32,7 @@ export default {
         label: "Modified Roll",
         width: 130,
         numeric: true,
+        sortable: true,
       },
       {
         field: "RowKey",
