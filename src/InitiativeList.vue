@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-    <p>Loading content from the API: <b id="name">...</b></p>
 
     <b-table
-      :data="isEmpty ? [] : data"
+      :data="isEmpty ? [] : initList"
       :columns="columns"
       :bordered="isBordered"
       :striped="isStriped"
@@ -16,6 +15,8 @@
       :checked-rows.sync="checkedRows"
       :checkbox-position="checkboxPosition"
     ></b-table>
+
+    <p>The API returned: <pre id="name">...</pre></p>
   </div>
 </template>
 
@@ -23,27 +24,23 @@
 export default {
   name: "InitiativeList",
   data() {
-    const data = [
-      { initiative: 20, name: "Lux" },
-      { initiative: 18, name: "Aya" },
-    ];
     const columns = [
       {
-        field: "initiative",
+        field: "ModifiedRoll",
         label: "Modified Roll",
         width: 130,
         numeric: true,
       },
       {
-        field: "name",
+        field: "RowKey",
         label: "Name",
       },
     ];
     return {
-      data,
+      initList: [{ RowKey: "Hi", ModifiedRoll: 18 }],
       columns,
       checkboxPosition: "left",
-      checkedRows: [data[1]],
+      // checkedRows: [this.data[1]],
       isEmpty: false,
       isBordered: false,
       isStriped: false,
@@ -58,13 +55,19 @@ export default {
     clickMe() {
       this.$buefy.notification.open("Clicked!!");
     },
+    refreshInitiativeList() {
+      (async function () {
+        let { data } = await (await fetch("/api/initiatives")).json();
+        document.querySelector("#name").textContent = JSON.stringify(data);
+        this.initList = data;
+      })();
+    },
   },
+  mounted() {
+    this.refreshInitiativeList()
+  }
 };
 
-(async function () {
-  let { text } = await (await fetch('/api/initiatives')).json();
-  document.querySelector("#name").textContent = text;
-})();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
