@@ -3,7 +3,6 @@
 
     <b-table
       :data="isEmpty ? [] : initList"
-      :columns="columns"
       :bordered="isBordered"
       :striped="isStriped"
       :narrowed="isNarrowed"
@@ -16,7 +15,26 @@
       :checkbox-position="checkboxPosition"
       default-sort="ModifiedRoll"
       default-sort-direction="desc"
-    ></b-table>
+    >
+      <b-table-column field='ModifiedRoll' label='Modified Roll' width='130' numeric sortable v-slot='props'>
+        {{ props.row.ModifiedRoll}}
+      </b-table-column>
+
+      <b-table-column field='RowKey' label='Name' v-slot='props'>
+        {{ props.row.RowKey}}
+      </b-table-column>
+
+      <b-table-column>
+        <b-icon 
+          icon='trash-can-outline'
+          size='is-small'
+          class='has-text-grey-light'
+          v-on:click="clickMe"
+          >
+        </b-icon>
+      </b-table-column>
+
+    </b-table>
 
     <p>The API returned: <pre id="name">...</pre></p>
   </div>
@@ -59,6 +77,7 @@ export default {
   },
   methods: {
     clickMe() {
+      // on click isn't working inside of the table because the table itself catches the click event
       this.$buefy.notification.open("Clicked!!");
     },
     async refreshInitiativeList() {
