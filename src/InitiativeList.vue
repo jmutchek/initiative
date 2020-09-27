@@ -43,7 +43,7 @@ export default {
       initList: [],
       columns,
       checkboxPosition: "left",
-      checkedRows: [],
+      // checkedRows: [],
       visibileRows: [],
       isEmpty: false,
       isBordered: false,
@@ -54,6 +54,23 @@ export default {
       isLoading: false,
       hasMobileCards: false,
     };
+  },
+  computed: {
+    checkedRows: {
+      // getter
+      get: function() {
+        var visibleRows=[]
+        this.initList.forEach(combatant => {
+          if (combatant.visible) {
+            visibleRows.push(combatant)
+          }
+        })
+        return visibleRows
+      },
+      set: function(newValue) {
+        
+      }
+    }
   },
   methods: {
     clickMe() {
@@ -94,7 +111,7 @@ export default {
   },
   mounted() {
     this.refreshInitiativeList();
-  },
+  }
 };
 
 function revealCombatant(combatant, visibility) {
