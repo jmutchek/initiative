@@ -31,7 +31,8 @@ export default {
   },
   methods: {
     clickMe() {
-      this.$buefy.notification.open("Clicked!!");
+      // this.$buefy.notification.open("Clicked!!");
+      this.$eventHub.$emit('clear-rolls')
     },
   },
 };

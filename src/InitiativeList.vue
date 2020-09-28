@@ -131,10 +131,11 @@ export default {
           maxlength: 2,
           min: -10,
         },
+        confirmText: "Save",
         trapFocus: true,
         // onConfirm: (value) => this.$buefy.toast.open(`New initiative is: ${value}`)
         onConfirm: (value) => {
-          this.updateCombatant(row, "ModifiedRoll", value);
+          this.updateCombatant(row, "ModifiedRoll", value, true);
         },
       });
     },
@@ -158,7 +159,7 @@ export default {
         .catch((err) => console.error(err));
     },
 
-    async updateCombatant(combatant, property, value) {
+    async updateCombatant(combatant, property, value, refresh) {
       combatant[property] = value;
       console.log(
         "setting " + combatant.RowKey + "'s " + property + " to " + value
@@ -175,11 +176,18 @@ export default {
 
       // send PUT request
       await fetch("/api/combatants", options).then((res) => res.json());
-      if (property === "ModifiedRoll") {
+      if (refresh) {
         this.refreshInitiativeList();
       }
       // .then((res) => console.log(res));
     },
+  
+    clearInitiativeRolls() {
+      this.initList.forEach(row => {
+        this.updateCombatant(row, "ModifiedRoll", 0, false);
+        this.refreshInitiativeList();
+      });
+    }
   },
 
   watch: {
@@ -204,9 +212,11 @@ export default {
   },
   created() {
     this.$eventHub.$on("reload-list", this.refreshInitiativeList);
+    this.$eventHub.$on("clear-rolls", this.clearInitiativeRolls);
   },
   beforeDestroy() {
     this.$eventHub.$off("reload-list");
+    this.$eventHub.$off("clear-rolls");
   },
   mounted() {
     this.refreshInitiativeList();
