@@ -1,13 +1,30 @@
 <template>
   <div>
-    <section class="section">
-      <h1 class="title">Initiative Order</h1>
-      <InitiativeList></InitiativeList>
-      <hr/>
-      <NewEntry></NewEntry>
-      <div class="actions">
-        <b-button @click="clickMe" class='is-danger'>Clear Initiative Rolls</b-button>
+    <section class='section'>
+      <h1 class='title'>Initiative Order</h1>
+  
+      <div id='entrypoint' class='entrypoint' v-if="view === 'none'">
+        <div class='door'>
+          <b-button @click='enterDoor("DM")' class='centered is-large is-primary'>Enter as the DM</b-button>
+        </div>
+        <div class='door'>
+          <b-button @click='enterDoor("PC")' class='centered is-large is-primary'>Enter as a Player</b-button>
+        </div>
       </div>
+
+      <div v-if="view === 'DM'">
+        <InitiativeList></InitiativeList>
+        <hr/>
+        <NewEntry></NewEntry>
+        <div class='actions'>
+          <b-button @click='clearRolls' class='is-danger'>Clear Initiative Rolls</b-button>
+        </div>
+      </div>
+
+      <div v-if="view === 'PC'">
+        Nothing here yet
+      </div>
+
     </section>
   </div>
 </template>
@@ -25,13 +42,17 @@ export default {
   },
   data() {
     return {
-      value: "World",
+      view: "none",
     };
   },
   methods: {
-    clickMe() {
+    clearRolls() {
       // this.$buefy.notification.open("Clicked!!");
       this.$eventHub.$emit('clear-rolls')
+    },
+    enterDoor(role) {
+      console.log ("entering the " + role + "'s view")
+      this.view = role
     },
   },
 };
@@ -42,6 +63,23 @@ export default {
 
 .actions {
   margin-top: 24px;
+}
+
+.entrypoint {
+  display: flex;
+}
+
+.door {
+  justify-content: center;
+  align-items: center; 
+  display: flex;
+  height: 200px;
+  flex: 1;
+  margin: 10px;
+  text-align: center;
+}
+
+.centered {
 }
 
 </style>
