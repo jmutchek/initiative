@@ -26,7 +26,7 @@
           <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
         </div>
         <div v-if="playerName !== ''">
-          Ready to fight!
+          <InitiativeListPlayer></InitiativeListPlayer>
         </div>
       </div>
 
@@ -40,6 +40,7 @@
 import NewEntry from "@/NewEntry.vue";
 import NewPlayer from "@/NewPlayer.vue";
 import InitiativeList from "@/InitiativeList.vue";
+import InitiativeListPlayer from "@/InitiativeListPlayer.vue";
 
 export default {
   name: "App",
@@ -47,6 +48,7 @@ export default {
     NewEntry,
     NewPlayer,
     InitiativeList,
+    InitiativeListPlayer
   },
   data() {
     return {
