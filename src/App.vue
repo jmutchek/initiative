@@ -5,10 +5,10 @@
   
       <div id='entrypoint' class='entrypoint' v-if="view === 'none'">
         <div class='door'>
-          <b-button @click='enterDoor("DM")' class='centered is-large is-primary'>Enter as the DM</b-button>
+          <b-button @click='enterDoor("DM")' class='centered is-large is-primary'>I am the DM</b-button>
         </div>
         <div class='door'>
-          <b-button @click='enterDoor("PC")' class='centered is-large is-primary'>Enter as a Player</b-button>
+          <b-button @click='enterDoor("PC")' class='centered is-large is-primary'>I am a Player</b-button>
         </div>
       </div>
 
@@ -22,8 +22,14 @@
       </div>
 
       <div v-if="view === 'PC'">
-        Nothing here yet
+        <div v-if="playerName === ''">
+          <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
+        </div>
+        <div v-if="playerName !== ''">
+          Ready to fight!
+        </div>
       </div>
+
 
     </section>
   </div>
@@ -32,17 +38,20 @@
 <script>
 // @ is an alias to /src
 import NewEntry from "@/NewEntry.vue";
+import NewPlayer from "@/NewPlayer.vue";
 import InitiativeList from "@/InitiativeList.vue";
 
 export default {
   name: "App",
   components: {
     NewEntry,
+    NewPlayer,
     InitiativeList,
   },
   data() {
     return {
       view: "none",
+      playerName: ""
     };
   },
   methods: {
@@ -54,7 +63,11 @@ export default {
       console.log ("entering the " + role + "'s view")
       this.view = role
     },
-  },
+    playerReady(name) {
+      console.log("caught player-ready")
+      this.playerName = name
+    }
+  }
 };
 </script>
 
