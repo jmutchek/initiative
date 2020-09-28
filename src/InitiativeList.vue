@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <b-table
       :data="isEmpty ? [] : initList"
       :bordered="isBordered"
@@ -16,33 +15,39 @@
       default-sort="ModifiedRoll"
       default-sort-direction="desc"
     >
-      <b-table-column field='ModifiedRoll' label='Modified Roll' width='130' numeric sortable v-slot='props'>
-        {{ props.row.ModifiedRoll}}
+      <b-table-column
+        field="ModifiedRoll"
+        label="Modified Roll"
+        width="130"
+        numeric
+        sortable
+        v-slot="props"
+      >
+        {{ props.row.ModifiedRoll }}
       </b-table-column>
 
-      <b-table-column field='RowKey' label='Name' v-slot='props'>
-        {{ props.row.RowKey}}
+      <b-table-column field="RowKey" label="Name" v-slot="props">
+        {{ props.row.RowKey }}
       </b-table-column>
 
-      <b-table-column v-slot='props'>
-         <b-button
+      <b-table-column v-slot="props">
+        <b-button
           type="is-text"
-          icon-left='edit'
-          size='is-small'
-          class='has-text-grey-light'
+          icon-left="edit"
+          size="is-small"
+          class="has-text-grey-light"
           v-on:click="editCombatant(props.row)"
-          >
+        >
         </b-button>
         <b-button
           type="is-text"
-          icon-left='user-slash'
-          size='is-small'
-          class='has-text-grey-light'
+          icon-left="user-slash"
+          size="is-small"
+          class="has-text-grey-light"
           v-on:click="deleteCombatant(props.row)"
-          >
+        >
         </b-button>
       </b-table-column>
-
     </b-table>
     <!-- <p>The API returned: <pre id="name">...</pre></p> -->
   </div>
@@ -81,12 +86,11 @@ export default {
       hasMobileCards: false,
     };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     async deleteCombatant(row) {
-      var rowBeingDeleted = row
-      console.log("deleting " + rowBeingDeleted.RowKey + " from to list")
+      var rowBeingDeleted = row;
+      console.log("deleting " + rowBeingDeleted.RowKey + " from to list");
 
       // request options
       const options = {
@@ -101,30 +105,53 @@ export default {
       await fetch("/api/combatants", options)
         .then((res) => res.json())
         // .then()
-        .catch(error => {
-          console.error(rowBeingDeleted.RowKey + ' could not be deleted', error)
+        .catch((error) => {
+          console.error(
+            rowBeingDeleted.RowKey + " could not be deleted",
+            error
+          );
           this.$buefy.notification.open({
-            message: rowBeingDeleted.RowKey + ' could not be deleted',
-            type: 'is-danger'
+            message: rowBeingDeleted.RowKey + " could not be deleted",
+            type: "is-danger",
           });
-        })
-        // .then((res) => console.log(res));
-      
-      this.$eventHub.$emit('reload-list')
+        });
+      // .then((res) => console.log(res));
+
+      this.$eventHub.$emit("reload-list");
       this.$buefy.notification.open("Deleted " + rowBeingDeleted.RowKey);
+    },
+    editCombatant(row) {
+      var rowBeingEdited = row;
+      console.log("editing " + rowBeingEdited.RowKey);
+
+      this.$buefy.dialog.prompt({
+        message: row.RowKey + `'s New Initiative`,
+        inputAttrs: {
+          type: "number",
+          placeholder: "modified initiative (roll + modifiers)",
+          value: row.ModifiedRoll,
+          maxlength: 2,
+          min: -10,
+        },
+        trapFocus: true,
+        // onConfirm: (value) => this.$buefy.toast.open(`New initiative is: ${value}`)
+        onConfirm: (value) => {
+          updateCombatant(row, "ModifiedRoll", value)
+          },
+      });
     },
     async refreshInitiativeList() {
       // with help from https://michaelnthiessen.com/this-is-undefined/
-      console.log('refreshing list')
+      console.log("refreshing list");
       await fetch("/api/initiatives")
         .then(async (data) => {
           var jsonBody = await data.json();
           this.initList = jsonBody.data;
-          this.initList.forEach(combatant => {
-          if (combatant.visible) {
-            this.checkedRows.push(combatant)
-          }
-        })
+          this.initList.forEach((combatant) => {
+            if (combatant.visible) {
+              this.checkedRows.push(combatant);
+            }
+          });
           // document.querySelector("#name").textContent = JSON.stringify(
           //   jsonBody
           // );
@@ -139,7 +166,7 @@ export default {
           return entry.RowKey === row.RowKey;
         });
         if (oldRowRemains.length == 0) {
-          revealCombatant(row, false);
+          updateCombatant(row, "visibility", false);
         }
       });
       newChecked.forEach((row) => {
@@ -147,25 +174,27 @@ export default {
           return entry.RowKey === row.RowKey;
         });
         if (newRow.length == 0) {
-          revealCombatant(row, true);
+          updateCombatant(row, "visibility", true);
         }
       });
     },
   },
   created() {
-    this.$eventHub.$on('reload-list', this.refreshInitiativeList)
+    this.$eventHub.$on("reload-list", this.refreshInitiativeList);
   },
   beforeDestroy() {
-    this.$eventHub.$off('reload-list');
+    this.$eventHub.$off("reload-list");
   },
   mounted() {
     this.refreshInitiativeList();
-  }
+  },
 };
 
-function revealCombatant(combatant, visibility) {
-  combatant.visible = visibility;
-  console.log("setting " + combatant.RowKey + "'s visibility to " + visibility);
+function updateCombatant(combatant, property, value) {
+  combatant[property] = value;
+  console.log(
+    "setting " + combatant.RowKey + "'s " + property + " to " + value
+  );
 
   // request options
   const options = {
@@ -177,13 +206,11 @@ function revealCombatant(combatant, visibility) {
   };
 
   // send PUT request
-  fetch("/api/combatants", options)
-    .then((res) => res.json())
-    // .then((res) => console.log(res));
+  fetch("/api/combatants", options).then((res) => res.json());
+  // .then((res) => console.log(res));
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
