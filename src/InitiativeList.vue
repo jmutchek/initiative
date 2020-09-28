@@ -25,9 +25,17 @@
       </b-table-column>
 
       <b-table-column v-slot='props'>
+         <b-button
+          type="is-text"
+          icon-left='edit'
+          size='is-small'
+          class='has-text-grey-light'
+          v-on:click="editCombatant(props.row)"
+          >
+        </b-button>
         <b-button
           type="is-text"
-          icon-left='trash-can-outline'
+          icon-left='user-slash'
           size='is-small'
           class='has-text-grey-light'
           v-on:click="deleteCombatant(props.row)"
@@ -36,8 +44,7 @@
       </b-table-column>
 
     </b-table>
-
-    <p>The API returned: <pre id="name">...</pre></p>
+    <!-- <p>The API returned: <pre id="name">...</pre></p> -->
   </div>
 </template>
 
@@ -118,9 +125,9 @@ export default {
             this.checkedRows.push(combatant)
           }
         })
-          document.querySelector("#name").textContent = JSON.stringify(
-            jsonBody
-          );
+          // document.querySelector("#name").textContent = JSON.stringify(
+          //   jsonBody
+          // );
         })
         .catch((err) => console.error(err));
     },
