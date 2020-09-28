@@ -4,10 +4,9 @@
       <h1 class="title">Initiative Order</h1>
       <InitiativeList></InitiativeList>
       <hr/>
-      <h2 class="subtitle">DM Edits</h2>
       <NewEntry></NewEntry>
       <div class="actions">
-        <b-button @click="clickMe">Clear Initiative Rolls</b-button>
+        <b-button @click="clickMe" class='is-danger'>Clear Initiative Rolls</b-button>
       </div>
     </section>
   </div>
