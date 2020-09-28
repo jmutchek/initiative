@@ -3,7 +3,7 @@ const azure = require('azure-storage');
 const tableService = azure.createTableService();
 const tableName = "initiative";
 
-module.exports = function (context, req) {
+module.exports = async function (context, req) {
   context.log('JavaScript HTTP trigger function: put-combatants');
 
   // const name = (req.query.name || (req.body && req.body.name));
@@ -16,20 +16,39 @@ module.exports = function (context, req) {
     // TODO: Add some object validation logic
     const item = req.body;
 
-    tableService.replaceEntity(tableName, item, function (error, result, response) {
-      response;
-      if (!error) {
-        context.res.status(202).json(result);
-      } else {
-        context.res.status(500).json({ error: error });
-      }
-    });
+    var updateTableResult = await (updateTable(context, tableService, tableName, item));
+
+    if (!updateTableResult.error) {
+      context.res = {
+        status: 202, /* Defaults to 200 */
+        body: { "status": "OK" }
+      };
+    }
+
+    // return {
+    //   res: updateTableResult
+    // }
   }
   else {
     context.res = {
       status: 400,
       body: "Please pass an item in the request body"
     };
-    context.done();
+    // context.done();
   }
+};
+
+function updateTable(context, tableService, tableName, item) {
+  return new Promise((resolve, reject) => {
+    tableService.replaceEntity(tableName, item, function (error, result, response) {
+      response;
+      if (!error) {
+        resolve(result)
+        // context.res.status(202).json(result);
+      } else {
+        reject(error)
+        // context.res.status(500).json({ error: error });
+      }
+    });
+  })
 }

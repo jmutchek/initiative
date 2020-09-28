@@ -23,5 +23,5 @@ module.exports = async function (context, req) {
         body: { "status": "OK"}
     };
 
-    context.done();
+    // context.done();
 }

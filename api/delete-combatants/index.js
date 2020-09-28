@@ -11,34 +11,32 @@ module.exports = async function (context, req) {
     // TODO: Add some object validation logic
     const item = req.body;
 
-    tableService.deleteEntity(tableName, item, function (error, result, response) {
-      if (!error) {
-        context.res = {
-          status: 204,
-          headers: { 'Content-Type':'application/json' },
-          body: response
-        }
-      }
-      else {
-        context.res = {
-          status: 500,
-          headers: { 'Content-Type':'application/json' },
-          body: { 
-            "status": "error",
-            "message": error.message
-          }
-        }
-      }
-    });
+    var deleteTableResult = await (deleteCombatant(context, tableService, tableName, item));
+
+    if (!deleteTableResult.error) {
+      context.res = {
+        status: 202, /* Defaults to 200 */
+        body: { "status": "OK" }
+      };
+    }
+    
   }
   else {
-    context.res = {
-      status: 404,
-      headers: { 'Content-Type':'application/json' },
-      body: { 
-        "status": "Not Found"
-      }
-    };
+    context.res.status(404).send();
   }
+}
 
+function deleteCombatant(context, tableService, tableName, item) {
+  return new Promise((resolve, reject) => {
+    tableService.deleteEntity(tableName, item, function (error, result, response) {
+      response;
+      if (!error) {
+        resolve(result)
+        // context.res.status(202).json(result);
+      } else {
+        reject(error)
+        // context.res.status(500).json({ error: error });
+      }
+    });
+  })
 }

@@ -77,7 +77,7 @@ export default {
   computed: {
   },
   methods: {
-    deleteCombatant(row) {
+    async deleteCombatant(row) {
       var rowBeingDeleted = row
       console.log("deleting " + rowBeingDeleted.RowKey + " from to list")
 
@@ -91,9 +91,9 @@ export default {
       };
 
       // send POST request
-      fetch("/api/combatants", options)
+      await fetch("/api/combatants", options)
         .then((res) => res.json())
-        .then(this.$eventHub.$emit('reload-list'))
+        // .then()
         .catch(error => {
           console.error(rowBeingDeleted.RowKey + ' could not be deleted', error)
           this.$buefy.notification.open({
@@ -103,10 +103,12 @@ export default {
         })
         // .then((res) => console.log(res));
       
+      this.$eventHub.$emit('reload-list')
       this.$buefy.notification.open("Deleted " + rowBeingDeleted.RowKey);
     },
     async refreshInitiativeList() {
       // with help from https://michaelnthiessen.com/this-is-undefined/
+      console.log('refreshing list')
       await fetch("/api/initiatives")
         .then(async (data) => {
           var jsonBody = await data.json();

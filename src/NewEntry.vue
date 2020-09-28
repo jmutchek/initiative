@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <b-field label="Add combatants to the initiative order">
-      <b-input v-model="newName"></b-input>
+      <b-input v-model="newName" @keyup.enter.native="clickMe"></b-input>
       <b-button @click="clickMe">Add</b-button>
     </b-field>
   </div>
@@ -16,7 +16,7 @@ export default {
     };
   },
   methods: {
-    clickMe() {
+    async clickMe() {
       // this.$buefy.notification.open("Clicked!!");
       console.log("adding " + this.newName + " to list")
 
@@ -35,9 +35,9 @@ export default {
       };
 
       // send POST request
-      fetch("/api/combatants", options)
+      await fetch("/api/combatants", options)
         .then((res) => res.json())
-        .then(this.$eventHub.$emit('reload-list'))
+        // .then()
         .catch(error => {
           console.error(this.newName + ' might already exist', error)
           this.$buefy.notification.open({
@@ -46,6 +46,8 @@ export default {
           });
         })
         // .then((res) => console.log(res));
+        this.$eventHub.$emit('reload-list')
+        this.newName = ""
     },
   },
 };
