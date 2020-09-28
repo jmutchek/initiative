@@ -16,6 +16,9 @@ module.exports = async function (context, req) {
     // TODO: Add some object validation logic
     const item = req.body;
 
+    if (item.ModifiedRoll) {
+      item.ModifiedRoll = Number(item.ModifiedRoll)
+    }
     var updateTableResult = await (updateTable(context, tableService, tableName, item));
 
     if (!updateTableResult.error) {

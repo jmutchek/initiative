@@ -120,11 +120,9 @@ export default {
       this.$eventHub.$emit("reload-list");
       this.$buefy.notification.open("Deleted " + rowBeingDeleted.RowKey);
     },
-    editCombatant(row) {
-      var rowBeingEdited = row;
-      console.log("editing " + rowBeingEdited.RowKey);
 
-      this.$buefy.dialog.prompt({
+    async editCombatant(row) {
+      await this.$buefy.dialog.prompt({
         message: row.RowKey + `'s New Initiative`,
         inputAttrs: {
           type: "number",
@@ -136,10 +134,11 @@ export default {
         trapFocus: true,
         // onConfirm: (value) => this.$buefy.toast.open(`New initiative is: ${value}`)
         onConfirm: (value) => {
-          updateCombatant(row, "ModifiedRoll", value)
-          },
+          this.updateCombatant(row, "ModifiedRoll", value);
+        },
       });
     },
+
     async refreshInitiativeList() {
       // with help from https://michaelnthiessen.com/this-is-undefined/
       console.log("refreshing list");
@@ -158,7 +157,31 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+
+    async updateCombatant(combatant, property, value) {
+      combatant[property] = value;
+      console.log(
+        "setting " + combatant.RowKey + "'s " + property + " to " + value
+      );
+
+      // request options
+      const options = {
+        method: "PUT",
+        body: JSON.stringify(combatant),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      // send PUT request
+      await fetch("/api/combatants", options).then((res) => res.json());
+      if (property === "ModifiedRoll") {
+        this.refreshInitiativeList();
+      }
+      // .then((res) => console.log(res));
+    },
   },
+
   watch: {
     checkedRows: function (newChecked, oldChecked) {
       oldChecked.forEach((row) => {
@@ -166,7 +189,7 @@ export default {
           return entry.RowKey === row.RowKey;
         });
         if (oldRowRemains.length == 0) {
-          updateCombatant(row, "visibility", false);
+          this.updateCombatant(row, "visible", false);
         }
       });
       newChecked.forEach((row) => {
@@ -174,7 +197,7 @@ export default {
           return entry.RowKey === row.RowKey;
         });
         if (newRow.length == 0) {
-          updateCombatant(row, "visibility", true);
+          this.updateCombatant(row, "visible", true);
         }
       });
     },
@@ -189,26 +212,6 @@ export default {
     this.refreshInitiativeList();
   },
 };
-
-function updateCombatant(combatant, property, value) {
-  combatant[property] = value;
-  console.log(
-    "setting " + combatant.RowKey + "'s " + property + " to " + value
-  );
-
-  // request options
-  const options = {
-    method: "PUT",
-    body: JSON.stringify(combatant),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  // send PUT request
-  fetch("/api/combatants", options).then((res) => res.json());
-  // .then((res) => console.log(res));
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
