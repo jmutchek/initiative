@@ -14,10 +14,11 @@
     >
       <b-table-column
         field="ModifiedRoll"
-        label="Modified Roll"
+        label="Initiative"
         width="130"
         numeric
         sortable
+        centered
         v-slot="props"
       >
         {{ props.row.ModifiedRoll }}
@@ -26,33 +27,27 @@
       <b-table-column field="RowKey" label="Name" v-slot="props">
         {{ props.row.RowKey }}
       </b-table-column>
-
     </b-table>
     <!-- <p>The API returned: <pre id="name">...</pre></p> -->
+    <div class="actions">
+      <b-button @click="editCombatant(currentPlayer)" class="">
+        Update Initiative roll for {{ this.playerName }}
+      </b-button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "InitiativeList",
+  name: "InitiativeListPlayer",
+  props: {
+    playerName: String
+  },
   data() {
-    const columns = [
-      {
-        field: "ModifiedRoll",
-        label: "Modified Roll",
-        width: 130,
-        numeric: true,
-        sortable: true,
-      },
-      {
-        field: "RowKey",
-        label: "Name",
-      },
-    ];
     return {
       initList: [],
-      columns,
       visibileRows: [],
+      currentPlayer: {},
       isEmpty: false,
       isBordered: false,
       isStriped: false,
@@ -65,7 +60,6 @@ export default {
   },
   computed: {},
   methods: {
-
     async editCombatant(row) {
       await this.$buefy.dialog.prompt({
         message: row.RowKey + `'s New Initiative`,
@@ -91,10 +85,13 @@ export default {
       await fetch("/api/initiatives")
         .then(async (data) => {
           var jsonBody = await data.json();
-          var newList = []
+          var newList = [];
           jsonBody.data.forEach((combatant) => {
             if (combatant.visible) {
-              newList.push(combatant)
+              if (combatant.RowKey === this.playerName) {
+                this.currentPlayer = combatant
+              }
+              newList.push(combatant);
             }
           });
           this.initList = newList;
@@ -127,7 +124,6 @@ export default {
       }
       // .then((res) => console.log(res));
     },
-  
   },
 
   created() {
@@ -144,4 +140,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.actions {
+  margin-top: 24px;
+}
+
 </style>

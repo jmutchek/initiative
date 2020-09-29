@@ -26,7 +26,7 @@
           <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
         </div>
         <div v-if="playerName !== ''">
-          <InitiativeListPlayer></InitiativeListPlayer>
+          <InitiativeListPlayer v-bind:playerName="playerName"></InitiativeListPlayer>
         </div>
       </div>
 
@@ -92,9 +92,6 @@ export default {
   flex: 1;
   margin: 10px;
   text-align: center;
-}
-
-.centered {
 }
 
 </style>

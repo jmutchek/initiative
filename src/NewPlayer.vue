@@ -23,6 +23,7 @@ export default {
       const newUser = {
         PartitionKey: "001",
         RowKey: this.newPlayer,
+        visible: true
       };
 
       // request options

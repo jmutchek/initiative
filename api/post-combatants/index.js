@@ -8,13 +8,14 @@ module.exports = async function (context, req) {
     //     : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
 
     const rowkey = (req.query.rowkey || (req.body && req.body.RowKey));
+    const visible = (req.query.visible || (req.body && req.body.visible));
 
     context.bindings.combatant = [];
     context.bindings.combatant.push(
       {
         PartitionKey: "001",
         RowKey: rowkey,
-        visible: false
+        visible: visible
       }
     );
 

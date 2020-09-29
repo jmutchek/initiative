@@ -17,9 +17,10 @@
     >
       <b-table-column
         field="ModifiedRoll"
-        label="Modified Roll"
+        label="Initiative"
         width="130"
         numeric
+        centered
         sortable
         v-slot="props"
       >
@@ -57,22 +58,8 @@
 export default {
   name: "InitiativeList",
   data() {
-    const columns = [
-      {
-        field: "ModifiedRoll",
-        label: "Modified Roll",
-        width: 130,
-        numeric: true,
-        sortable: true,
-      },
-      {
-        field: "RowKey",
-        label: "Name",
-      },
-    ];
     return {
       initList: [],
-      columns,
       checkboxPosition: "left",
       checkedRows: [],
       visibileRows: [],
