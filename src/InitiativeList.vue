@@ -57,6 +57,9 @@
 <script>
 export default {
   name: "InitiativeList",
+  props: {
+    refreshMillis: Number
+  },
   data() {
     return {
       initList: [],
@@ -174,8 +177,20 @@ export default {
         this.updateCombatant(row, "ModifiedRoll", 0, false);
         this.refreshInitiativeList();
       });
+    },
+
+    startIntervalRefresh() {
+      console.log("starting interval refresh")
+      this.interval1 = setInterval(() => {
+        this.refreshInitiativeList()
+      }, this.refreshMillis)
+    },
+
+    stopIntervalRefresh() {
+      console.log("stopping interval refresh")
+      this.interval1.clearInterval()
     }
-  },
+},
 
   watch: {
     checkedRows: function (newChecked, oldChecked) {
@@ -207,6 +222,7 @@ export default {
   },
   mounted() {
     this.refreshInitiativeList();
+    this.startIntervalRefresh();
   },
 };
 </script>

@@ -41,7 +41,8 @@
 export default {
   name: "InitiativeListPlayer",
   props: {
-    playerName: String
+    playerName: String,
+    refreshMillis: Number
   },
   data() {
     return {
@@ -102,6 +103,17 @@ export default {
         .catch((err) => console.error(err));
     },
 
+    startIntervalRefresh() {
+      this.interval1 = setInterval(() => {
+        this.refreshInitiativeList()
+      }, this.refreshMillis)
+    },
+
+    stopIntervalRefresh() {
+      console.log("stopping interval refresh")
+      this.interval1.clearInterval()
+    },
+
     async updateCombatant(combatant, property, value, refresh) {
       combatant[property] = value;
       console.log(
@@ -134,6 +146,7 @@ export default {
   },
   mounted() {
     this.refreshInitiativeList();
+    this.startIntervalRefresh();
   },
 };
 </script>

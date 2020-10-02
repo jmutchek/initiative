@@ -13,7 +13,7 @@
       </div>
 
       <div v-if="view === 'DM'">
-        <InitiativeList></InitiativeList>
+        <InitiativeList v-bind:refreshMillis='6000'></InitiativeList>
         <hr/>
         <NewEntry></NewEntry>
         <div class='actions'>
@@ -26,7 +26,7 @@
           <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
         </div>
         <div v-if="playerName !== ''">
-          <InitiativeListPlayer v-bind:playerName="playerName"></InitiativeListPlayer>
+          <InitiativeListPlayer v-bind:playerName="playerName" v-bind:refreshMillis='6000'></InitiativeListPlayer>
         </div>
       </div>
 
