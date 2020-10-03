@@ -1,4 +1,6 @@
-# Vue Basic
+# Initiative
+
+This is a very simple, distributed initiative tracker for role-playing games. Our party uses it to submit and track our initiative scores while playing D&amp;D over video chat.
 
 ## Project setup
 

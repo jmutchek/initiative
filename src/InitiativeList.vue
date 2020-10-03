@@ -188,7 +188,8 @@ export default {
 
     stopIntervalRefresh() {
       console.log("stopping interval refresh")
-      this.interval1.clearInterval()
+      clearInterval(this.interval1)
+      this.interval1 = null
     }
 },
 

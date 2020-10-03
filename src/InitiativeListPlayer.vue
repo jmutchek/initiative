@@ -91,6 +91,12 @@ export default {
             if (combatant.visible) {
               if (combatant.RowKey === this.playerName) {
                 this.currentPlayer = combatant
+                // combatant.RowKey += " (you)"
+                if (combatant.ModifiedRoll <= 0) {
+                  this.stopIntervalRefresh()
+                } else {
+                  this.startIntervalRefresh()
+                }
               }
               newList.push(combatant);
             }
@@ -104,14 +110,18 @@ export default {
     },
 
     startIntervalRefresh() {
-      this.interval1 = setInterval(() => {
-        this.refreshInitiativeList()
-      }, this.refreshMillis)
+      if (!this.interval1) {
+        console.log("starting interval refresh")
+        this.interval1 = setInterval(() => {
+          this.refreshInitiativeList()
+        }, this.refreshMillis)
+      }
     },
 
     stopIntervalRefresh() {
       console.log("stopping interval refresh")
-      this.interval1.clearInterval()
+      clearInterval(this.interval1)
+      this.interval1 = null
     },
 
     async updateCombatant(combatant, property, value, refresh) {
@@ -132,7 +142,7 @@ export default {
       // send PUT request
       await fetch("/api/combatants", options).then((res) => res.json());
       if (refresh) {
-        this.refreshInitiativeList();
+        this.startIntervalRefresh()
       }
       // .then((res) => console.log(res));
     },
