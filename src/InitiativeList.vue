@@ -14,6 +14,7 @@
       :checkbox-position="checkboxPosition"
       default-sort="ModifiedRoll"
       default-sort-direction="desc"
+      @check="checked"
     >
       <b-table-column
         field="ModifiedRoll"
@@ -73,7 +74,7 @@ export default {
       isHoverable: false,
       isFocusable: false,
       isLoading: false,
-      hasMobileCards: false,
+      hasMobileCards: false
     };
   },
   computed: {},
@@ -137,6 +138,7 @@ export default {
         .then(async (data) => {
           var jsonBody = await data.json();
           this.initList = jsonBody.data;
+          this.checkedRows = []
           this.initList.forEach((combatant) => {
             if (combatant.visible) {
               this.checkedRows.push(combatant);
@@ -192,29 +194,22 @@ export default {
       this.$emit('toggle-refresh', false)
       clearInterval(this.interval1)
       this.interval1 = null
+    },
+
+    checked(newChecked, checkedRow) {
+      this.stopIntervalRefresh()
+
+      if (checkedRow.visible) {
+        this.updateCombatant(checkedRow, "visible", false);
+      } else {
+        this.updateCombatant(checkedRow, "visible", true);
+      }
+
+      this.startIntervalRefresh()
     }
 },
 
-  watch: {
-    checkedRows: function (newChecked, oldChecked) {
-      oldChecked.forEach((row) => {
-        var oldRowRemains = newChecked.filter(function (entry) {
-          return entry.RowKey === row.RowKey;
-        });
-        if (oldRowRemains.length == 0) {
-          this.updateCombatant(row, "visible", false);
-        }
-      });
-      newChecked.forEach((row) => {
-        var newRow = oldChecked.filter(function (entry) {
-          return entry.RowKey === row.RowKey;
-        });
-        if (newRow.length == 0) {
-          this.updateCombatant(row, "visible", true);
-        }
-      });
-    },
-  },
+  watch: {},
   created() {
     this.$eventHub.$on("reload-list", this.refreshInitiativeList);
     this.$eventHub.$on("clear-rolls", this.clearInitiativeRolls);
