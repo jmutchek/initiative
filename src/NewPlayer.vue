@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <b-field label="What is your character's name?">
-      <b-input v-model="newPlayer" @keyup.enter.native="clickMe"></b-input>
+      <b-input ref="playerInput" v-model="newPlayer" @keyup.enter.native="clickMe"></b-input>
       <b-button @click="clickMe">Save</b-button>
     </b-field>
   </div>
@@ -49,6 +49,9 @@ export default {
         this.$emit('playerReady', this.newPlayer)
     },
   },
+  mounted() {
+    this.$refs.playerInput.focus()
+  }
 };
 </script>
 
