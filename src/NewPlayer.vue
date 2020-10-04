@@ -41,9 +41,9 @@ export default {
         // .then()
         .catch(error => {
           console.log(`${this.newPlayer} might already exist`, error)
-          this.$buefy.notification.open({
-            message: this.newPlayer + ' might already exist'
-          });
+          // this.$buefy.notification.open({
+          //   message: this.newPlayer + ' might already exist'
+          // });
         })
         // .then((res) => console.log(res));
         this.$emit('playerReady', this.newPlayer)

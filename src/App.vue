@@ -1,8 +1,18 @@
 <template>
   <div>
     <section class='section'>
-      <h1 class='title'>Initiative Order</h1>
-  
+
+      <div class='headers'>
+        <div class=''><h1 class='title'>Initiative Order</h1></div>
+        <div class='hright'>
+          <b-icon icon="sync-alt" 
+            v-if="view !== 'none'"
+            size="is-medium" 
+            :type="refreshingType">
+          </b-icon>
+        </div>
+      </div>
+      
       <div id='entrypoint' class='entrypoint' v-if="view === 'none'">
         <div class='door'>
           <b-button @click='enterDoor("DM")' class='centered is-large is-primary'>I am the DM</b-button>
@@ -13,7 +23,7 @@
       </div>
 
       <div v-if="view === 'DM'">
-        <InitiativeList v-bind:refreshMillis='6000'></InitiativeList>
+        <InitiativeList v-bind:refreshMillis='6000' @toggle-refresh='toggleRefresh'></InitiativeList>
         <hr/>
         <NewEntry></NewEntry>
         <div class='actions'>
@@ -26,7 +36,7 @@
           <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
         </div>
         <div v-if="playerName !== ''">
-          <InitiativeListPlayer v-bind:playerName="playerName" v-bind:refreshMillis='6000'></InitiativeListPlayer>
+          <InitiativeListPlayer v-bind:playerName="playerName" v-bind:refreshMillis='6000' @toggle-refresh='toggleRefresh'></InitiativeListPlayer>
         </div>
       </div>
 
@@ -53,7 +63,8 @@ export default {
   data() {
     return {
       view: "none",
-      playerName: ""
+      playerName: "",
+      isRefreshing: false
     };
   },
   methods: {
@@ -68,6 +79,15 @@ export default {
     playerReady(name) {
       console.log("caught player-ready")
       this.playerName = name
+    },
+    toggleRefresh(e){
+      this.isRefreshing = e
+    }
+  },
+  computed: {
+    refreshingType() {
+      if (this.isRefreshing) return 'is-primary'
+      else return 'is-light'
     }
   }
 };
@@ -92,6 +112,15 @@ export default {
   flex: 1;
   margin: 10px;
   text-align: center;
+}
+
+.headers {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.hright {
+  margin-left: auto;
 }
 
 </style>

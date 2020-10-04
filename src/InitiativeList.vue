@@ -181,6 +181,7 @@ export default {
 
     startIntervalRefresh() {
       console.log("starting interval refresh")
+      this.$emit('toggle-refresh', true)
       this.interval1 = setInterval(() => {
         this.refreshInitiativeList()
       }, this.refreshMillis)
@@ -188,6 +189,7 @@ export default {
 
     stopIntervalRefresh() {
       console.log("stopping interval refresh")
+      this.$emit('toggle-refresh', false)
       clearInterval(this.interval1)
       this.interval1 = null
     }
