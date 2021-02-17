@@ -178,9 +178,11 @@ export default {
   
     clearInitiativeRolls() {
       this.initList.forEach(row => {
-        this.updateCombatant(row, "ModifiedRoll", 0, false);
-        this.refreshInitiativeList();
+        if (row.visible) {
+          this.updateCombatant(row, "ModifiedRoll", 0, false);
+        }
       });
+      this.refreshInitiativeList();
     },
 
     startIntervalRefresh() {
