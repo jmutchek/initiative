@@ -107,6 +107,10 @@ export default {
       if (this.passphrase) return ''
       else return 'a session code is required'
     }
+  },
+  mounted: function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    this.passphrase = urlParams.get('session')
   }
 };
 </script>
