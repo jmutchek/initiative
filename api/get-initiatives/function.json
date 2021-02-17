@@ -8,13 +8,13 @@
       "methods": [
         "get"
       ],
-      "route": "initiatives"
+      "route": "initiatives/{sessionCode}"
     },
     {
       "name": "initiativeList",
       "type": "table",
       "tableName": "initiative",
-      "filter": "PartitionKey eq '001'",
+      "filter": "PartitionKey eq '{sessionCode}'",
       "connection": "MyStorageConnectionAppSetting",
       "direction": "in"
     },

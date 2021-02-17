@@ -28,7 +28,7 @@
       </div>
 
       <div v-if="view === 'DM'">
-        <InitiativeList v-bind:refreshMillis='6000' @toggle-refresh='toggleRefresh'></InitiativeList>
+        <InitiativeList v-bind:refreshMillis='6000' v-bind:sessionCode=passphrase @toggle-refresh='toggleRefresh'></InitiativeList>
         <hr/>
         <NewEntry></NewEntry>
         <div class='actions'>
@@ -41,10 +41,11 @@
           <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
         </div>
         <div v-if="playerName !== ''">
-          <InitiativeListPlayer v-bind:playerName="playerName" v-bind:refreshMillis='6000' @toggle-refresh='toggleRefresh'></InitiativeListPlayer>
+          <InitiativeListPlayer v-bind:playerName="playerName" v-bind:refreshMillis='6000' v-bind:sessionCode=passphrase @toggle-refresh='toggleRefresh'></InitiativeListPlayer>
         </div>
       </div>
 
+      <div v-if="view !== 'none'" class='sessioncode'>session code: {{passphrase}}</div>
 
     </section>
   </div>
@@ -139,6 +140,12 @@ export default {
 .headers {
   display: flex;
   margin-bottom: 24px;
+}
+
+.sessioncode {
+  font-style: italic;
+  color: lightsteelblue;
+  margin-top: 24px;
 }
 
 .hright {
