@@ -83,7 +83,7 @@ export default {
         console.log ("entering the " + role + "'s view")
         this.view = role
       } else {
-        this.passphraseInputStyle = "is-danger"
+        console.log ("session code required")
       }
     },
     playerReady(name) {
