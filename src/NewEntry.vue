@@ -10,6 +10,9 @@
 <script>
 export default {
   name: "NewEntry",
+  props: {
+    sessionCode: String
+  },
   data() {
     return {
       newName: ""
@@ -21,7 +24,7 @@ export default {
       console.log("adding " + this.newName + " to list")
 
       const newUser = {
-        PartitionKey: "001",
+        PartitionKey: this.sessionCode,
         RowKey: this.newName,
         visible: false
       };

@@ -42,7 +42,8 @@ export default {
   name: "InitiativeListPlayer",
   props: {
     playerName: String,
-    refreshMillis: Number
+    refreshMillis: Number,
+    sessionCode: String
   },
   data() {
     return {
@@ -83,7 +84,7 @@ export default {
     async refreshInitiativeList() {
       // with help from https://michaelnthiessen.com/this-is-undefined/
       console.log("refreshing list");
-      await fetch("/api/initiatives")
+      await fetch("/api/initiatives/" + this.sessionCode)
         .then(async (data) => {
           var jsonBody = await data.json();
           var newList = [];

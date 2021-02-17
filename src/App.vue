@@ -30,7 +30,7 @@
       <div v-if="view === 'DM'">
         <InitiativeList v-bind:refreshMillis='6000' v-bind:sessionCode=passphrase @toggle-refresh='toggleRefresh'></InitiativeList>
         <hr/>
-        <NewEntry></NewEntry>
+        <NewEntry v-bind:sessionCode=passphrase></NewEntry>
         <div class='actions'>
           <b-button @click='clearRolls' class='is-danger'>Clear Initiative Rolls</b-button>
         </div>
@@ -38,7 +38,7 @@
 
       <div v-if="view === 'PC'">
         <div v-if="playerName === ''">
-          <NewPlayer v-on:playerReady="playerReady"></NewPlayer>
+          <NewPlayer v-bind:sessionCode=passphrase v-on:playerReady="playerReady"></NewPlayer>
         </div>
         <div v-if="playerName !== ''">
           <InitiativeListPlayer v-bind:playerName="playerName" v-bind:refreshMillis='6000' v-bind:sessionCode=passphrase @toggle-refresh='toggleRefresh'></InitiativeListPlayer>

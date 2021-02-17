@@ -10,6 +10,9 @@
 <script>
 export default {
   name: "NewPlayer",
+  props: {
+    sessionCode: String
+  },
   data() {
     return {
       newPlayer: ""
@@ -21,7 +24,7 @@ export default {
       console.log("adding " + this.newPlayer + " to list")
 
       const newUser = {
-        PartitionKey: "001",
+        PartitionKey: this.sessionCode,
         RowKey: this.newPlayer,
         visible: true
       };
