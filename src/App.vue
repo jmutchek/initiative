@@ -17,6 +17,11 @@
         <div class='door'>
           <b-button @click='enterDoor("DM")' class='centered is-large is-primary'>I am the DM</b-button>
         </div>
+        <div class="door">
+          <b-field :type="passphraseInputStyle" :message="passphraseInputMessage">
+            <b-input v-model="passphrase" ></b-input>
+          </b-field>
+        </div>
         <div class='door'>
           <b-button @click='enterDoor("PC")' class='centered is-large is-primary'>I am a Player</b-button>
         </div>
@@ -64,7 +69,8 @@ export default {
     return {
       view: "none",
       playerName: "",
-      isRefreshing: false
+      isRefreshing: false,
+      passphrase: ""
     };
   },
   methods: {
@@ -73,8 +79,12 @@ export default {
       this.$eventHub.$emit('clear-rolls')
     },
     enterDoor(role) {
-      console.log ("entering the " + role + "'s view")
-      this.view = role
+      if (this.passphrase) {
+        console.log ("entering the " + role + "'s view")
+        this.view = role
+      } else {
+        this.passphraseInputStyle = "is-danger"
+      }
     },
     playerReady(name) {
       console.log("caught player-ready")
@@ -88,6 +98,14 @@ export default {
     refreshingType() {
       if (this.isRefreshing) return 'is-primary'
       else return 'is-light'
+    },
+    passphraseInputStyle() {
+      if (this.passphrase) return ''
+      else return 'is-danger'
+    },
+    passphraseInputMessage() {
+      if (this.passphrase) return ''
+      else return 'a session code is required'
     }
   }
 };
